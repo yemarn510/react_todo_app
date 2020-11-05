@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 // importing components
 import Form from './components/Form'
@@ -8,7 +8,26 @@ function App() {
   const [inputText, setInputText] = useState("")
   const [todos, setTodos] = useState([])
   const [status, setStatus] = useState('all')
-  console.log(status)
+  const [filteredTodos, setFilteredTodos] = useState([])
+
+  useEffect(()=>{
+    filterHandler()
+  }, [todos, status])
+
+  function filterHandler(){
+    switch(status){
+      case 'completed':
+        setFilteredTodos(todos.filter((todo) => todo.finished === true))
+        break;
+      case 'uncompleted':
+        setFilteredTodos(todos.filter((todo) => todo.finished === false))
+        break;
+      case 'all':
+        setFilteredTodos(todos)
+        break;
+    }
+  }
+
   return (
     <div className="App">
       <header>
@@ -18,8 +37,9 @@ function App() {
             setTodos={setTodos}
             inputText={inputText}
             setInputText={setInputText}
-            setStatus={setStatus}/>
-      <Todos todos={todos} setTodos={setTodos}/>
+            setStatus={setStatus}
+            setFilteredTodos={setFilteredTodos}/>
+      <Todos todos={filteredTodos} setTodos={setTodos}/>
     </div>
   );
 }

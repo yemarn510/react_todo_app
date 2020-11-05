@@ -6,11 +6,21 @@ function Form({inputText, setInputText, todos, setTodos, setStatus}){
     }
     function submitTodoHandler(e){
         e.preventDefault(); // prevent refresh the whole page
-        setTodos([...todos, {id: Math.random() * 1000 , text: inputText, finished: false}])
-        setInputText('');
+        if(inputText){
+            setTodos([...todos, {id: Math.random() * 1000 , text: inputText, finished: false}])
+            setInputText('');
+        }
     }
     function statusHandler(e){
         setStatus(e.target.value)
+    }
+
+    function saveToLocalStorage(){
+        if(localStorage.getItem('todos') === null){
+            localStorage.setItem('todos', JSON.stringify([]))
+        }else{
+            localStorage.setItem('todos', JSON.stringify(todos))
+        }
     }
     return (
         <form>
